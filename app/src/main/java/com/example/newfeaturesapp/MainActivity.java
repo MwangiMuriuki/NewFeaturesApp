@@ -1,8 +1,15 @@
 package com.example.newfeaturesapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.newfeaturesapp.databinding.ActivityMainBinding;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.android.libraries.places.widget.Autocomplete;
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
@@ -17,9 +24,14 @@ import androidx.viewpager.widget.ViewPager;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
+import static java.security.AccessController.getContext;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -27,6 +39,13 @@ public class MainActivity extends AppCompatActivity {
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
+
+    Button button;
+
+    PlacesClient placesClient;
+    List<Place.Field> placeField = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS);
+    int AUTOCOMPLETE_REQUEST_CODE = 1;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +66,25 @@ public class MainActivity extends AppCompatActivity {
 
                 tabLayout = findViewById(R.id.tabLayoutTest);
                 tabLayout.setupWithViewPager(viewPager);
+
+                button = findViewById(R.id.selectLocation);
+
+                String apikey = getResources().getString(R.string.places_api_key);
+                Places.initialize(getApplicationContext(), getString(R.string.places_api_key));
+                placesClient = Places.createClient(getApplicationContext());
+
+                button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        Toast.makeText(getApplicationContext(), "Clicked", Toast.LENGTH_SHORT).show();
+
+                        Intent intent = new Autocomplete.IntentBuilder(
+                                AutocompleteActivityMode.OVERLAY, placeField)
+                                .build(getApplicationContext());
+                        startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE);
+                    }
+                });
 
             }
         });

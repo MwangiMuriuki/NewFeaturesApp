@@ -17,7 +17,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -34,9 +34,15 @@
             <androidx.viewpager.widget.ViewPager
                 android:id="@+id/viewPager"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp" />
+
+            <Button
+                android:id="@+id/selectLocation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Find location..."/>
 
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
